@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Andie & Beans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-pink: #ff9ad4;
+      --bg-purple: #7b4bb8;
+      --card-bg: #fff7f9;
+      --text-dark: #3a1f5f;
+      --text-mid: #5a3a7f;
+      --pink: #ff6faf;
+      --pink-dark: #f0559a;
+      --purple: #a66bff;
+      --light-purple: #e5d7f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg-pink), var(--bg-purple));
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background decorations */
+    .bg-decor img {
+      position: absolute;
+      opacity: 0.35;
+      width: 64px;
+      height: 64px;
+      pointer-events: none;
+    }
+
+    .paw1 { top: 8%; left: 10%; }
+    .paw2 { top: 20%; right: 12%; }
+    .paw3 { bottom: 18%; left: 18%; }
+    .heart1 { top: 35%; left: 50%; transform: translateX(-50%); }
+    .heart2 { bottom: 10%; right: 8%; }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    /* No big white outer card */
+    .card {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    /* Header */
+    .header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .header-dog {
+      width: 120px;
+    }
+
+    .header-title img {
+      max-width: 260px;
+      width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 800px) {
+      .header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+    }
+
+    /* Main grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section-card {
+      border-radius: 20px;
+      padding: 18px 20px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .feeding { background: #ffe6f0; }
+    .water { background: #e9e6ff; }
+
+    .section-top {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .section-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .section-counter {
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: var(--card-bg);
+      font-size: 13px;
+      color: var(--text-dark);
+      text-align: center;
+      min-width: 110px;
+    }
+
+    /* Feeding progress */
+    .feeding-body {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .progress-bar {
+      position: relative;
+      width: 70px;
+      height: 220px;
+      border-radius: 999px;
+      background: #fdf5ff;
+      border: 2px solid var(--light-purple);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, var(--pink), #ffd3ec);
+      transition: height 0.25s ease-out;
+    }
+
+    .progress-dogs {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      pointer-events: none;
+    }
+
+    .progress-labels {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-dark);
+    }
+
+    .feeding-info {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-top: 6px;
+    }
+
+    /* Water section */
+    .water-body {
+      text-align: center;
+    }
+
+    .water-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .water-main-img {
+      width: 160px;
+      margin: 8px auto 10px;
+      display: block;
+    }
+
+    .water-text {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin: 2px 0;
+    }
+
+    .water-text strong {
+      color: var(--text-dark);
+    }
+
+    /* Buttons */
+    .btn {
+      margin-top: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-feed { background: var(--pink); }
+    .btn-feed:hover { background: var(--pink-dark); }
+
+    .btn-water { background: var(--purple); }
+    .btn-water:hover { background: #8c54e0; }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Activity */
+    .activity-card {
+      border-radius: 20px;
+      padding: 18px 20px 20px;
+      background: var(--card-bg);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .activity-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .activity-summary {
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .activity-list {
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .activity-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .activity-text-main {
+      font-size: 13px;
+      color: var(--text-dark);
+    }
+
+    .activity-text-sub {
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+
+    .history-toggle {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .history-toggle button {
+      border: none;
+      background: transparent;
+      color: var(--purple);
+      font-size: 13px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Onboarding overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .overlay-card {
+      background: #fdf5ff;
+      border-radius: 20px;
+      padding: 18px 20px 20px;
+      width: 90%;
+      max-width: 360px;
+      border: 2px solid var(--purple);
+      text-align: center;
+      color: var(--text-dark);
+    }
+
+    .overlay-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .overlay-subtitle {
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: var(--text-mid);
+    }
+
+    .user-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .user-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      background: var(--pink);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .user-btn:nth-child(odd) {
+      background: var(--purple);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background decorations -->
+  <div class="bg-decor">
+    <img class="paw1" src="assets/DarkPurpleDogPaw.png" alt="">
+    <img class="paw2" src="assets/LightPurpleDogPaw.png" alt="">
+    <img class="paw3" src="assets/MediumPurpleDogPaw.png" alt="">
+    <img class="heart1" src="assets/PinkHeart.png" alt="">
+    <img class="heart2" src="assets/PinkHeart.png" alt="">
+  </div>
+
+  <div class="app">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="header">
+        <img class="header-dog" src="assets/AndieHeadshot.png" alt="Andie">
+        <div class="header-title">
+          <img src="assets/NamesHeader.png" alt="Andie & Beans">
+        </div>
+        <img class="header-dog" src="assets/BeansHeadhsot.png" alt="Beans">
+      </div>
+
+      <!-- Main grid -->
+      <div class="main-grid">
+
+        <!-- Feeding -->
+        <div class="section-card feeding">
+          <div class="section-top">
+            <img class="section-icon" src="assets/FoodBowlImage.png" alt="Food bowl">
+            <div class="section-title">Feeding</div>
+            <div class="section-counter" id="feeding-counter">0 of 2 feedings</div>
+          </div>
+
+          <div class="feeding-body">
+            <div class="progress-bar">
+              <div class="progress-fill" id="feeding-fill"></div>
+              <img id="feeding-dogs" class="progress-dogs" src="assets/ProgressBarDoubleDog.png" alt="">
+            </div>
+
+            <div>
+              <div class="progress-labels">
+                <div>0 — Time to eat!</div>
+                <div>1 — Halfway!</div>
+                <div>2 — All done!</div>
+              </div>
+              <div class="feeding-info" id="feeding-last">
+                No feedings yet today.
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-feed" id="btn-feed">
+            I FED ANDIE &amp; BEANS!
+          </button>
+        </div>
+
+        <!-- Water -->
+        <div class="section-card water">
+          <div class="section-top">
+            <div class="water-icon">💧</div>
+            <div class="section-title">Water</div>
+            <div class="section-counter" id="water-counter">0 of 3 days</div>
+          </div>
+
+          <div class="water-body">
+            <img class="water-main-img" src="assets/WaterBowlImageBig.png" alt="Water bowl">
+            <div class="water-text" id="water-last">Last refill: none yet.</div>
+            <div class="water-text" id="water-next">Next refill: in 3 days.</div>
+          </div>
+
+          <button class="btn btn-water" id="btn-water">
+            I REFILLED THE WATER!
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Activity -->
+      <div class="activity-card">
+        <div class="activity-header">
+          <div class="activity-title">TODAY'S ACTIVITY</div>
+          <div class="activity-summary" id="activity-summary">0 actions today</div>
+        </div>
+        <div class="activity-list" id="activity-list"></div>
+        <div class="history-toggle">
+          <button id="toggle-history">View full history</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Onboarding overlay -->
+  <div class="overlay" id="user-overlay" style="display:none;">
+    <div class="overlay-card">
+      <div class="overlay-title">Who’s using the app?</div>
+      <div class="overlay-subtitle">
+        Choose your name so we can track who fed Andie &amp; Beans.
+      </div>
+      <div class="user-buttons">
+        <button class="user-btn" data-user="Evva">Evva</button>
+        <button class="user-btn" data-user="Jeff">Jeff</button>
+        <button class="user-btn" data-user="Stef">Stef</button>
+        <button class="user-btn" data-user="Cadence">Cadence</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ICONS = {
+      feed: "assets/FoodBowlImage.png",
+      water: "assets/LittleWaterBowl.png"
+    };
+
+    const STORAGE_KEYS = {
+      user: "andiebeans_user",
+      feeding: "andiebeans_feeding",
+      water: "andiebeans_water",
+      history: "andiebeans_history"
+    };
+
+    let currentUser = null;
+    let feedingState = { date: null, count: 0, last: null, lastUser: null };
+    let waterState = { lastRefillDate: null };
+    let history = [];
+
+    function todayString() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function formatTime(dt) {
+      const d = new Date(dt);
+      const hours = d.getHours();
+      const minutes = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const h12 = hours % 12 || 12;
+      return `${h12}:${minutes} ${ampm}`;
+    }
+
+    function formatDateLabel(dt) {
+      const d = new Date(dt);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      const sameDay = (a, b) =>
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+
+      if (sameDay(d, today)) return "Today";
+      if (sameDay(d, yesterday)) return "Yesterday";
+
+      return d.toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEYS.user, currentUser || "");
+      localStorage.setItem(STORAGE_KEYS.feeding, JSON.stringify(feedingState));
+      localStorage.setItem(STORAGE_KEYS.water, JSON.stringify(waterState));
+      localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
+    }
+
+    function loadState() {
+      currentUser = localStorage.getItem(STORAGE_KEYS.user) || null;
+      feedingState = JSON.parse(localStorage.getItem(STORAGE_KEYS.feeding) || '{"date":null,"count":0,"last":null,"lastUser":null}');
+      waterState = JSON.parse(localStorage.getItem(STORAGE_KEYS.water) || '{"lastRefillDate":null}');
+      history = JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || "[]");
+    }
+
+    function ensureDailyReset() {
+      const today = todayString();
+      if (feedingState.date !== today) {
+        feedingState.date = today;
+        feedingState.count = 0;
+        feedingState.last = null;
+        feedingState.lastUser = null;
+      }
+    }
+
+    function addHistory(type) {
+      history.push({
+        timestamp: new Date().toISOString(),
+        action: type === "feed" ? "Fed Andie & Beans" : "Refilled water",
+        type,
+        user: currentUser || "Unknown"
+      });
+
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - 7);
+      history = history.filter(h => new Date(h.timestamp) >= cutoff);
+
+      saveState();
+      renderActivity();
+    }
+
+    function renderFeeding() {
+      const counter = document.getElementById("feeding-counter");
+      const fill = document.getElementById("feeding-fill");
+      const dogs = document.getElementById("feeding-dogs");
+      const last = document.getElementById("feeding-last");
+
+      const count = feedingState.count;
+      counter.textContent = `${count} of 2 feedings`;
+
+      fill.style.height = `${(count / 2) * 100}%`;
+
+      const barHeight = 220;
+      const dogsHeight = 80;
+      const available = barHeight - dogsHeight;
+      dogs.style.top = `${barHeight - dogsHeight - (count / 2) * available}px`;
+
+      if (feedingState.last) {
+        const dt = new Date(feedingState.last);
+        last.innerHTML =
+          `<strong>Last fed by:</strong> ${feedingState.lastUser}<br>` +
+          `${formatDateLabel(dt)} at ${formatTime(dt)}`;
+      } else {
+        last.textContent = "No feedings yet today.";
+      }
+    }
+
+    function renderWater() {
+      const counter = document.getElementById("water-counter");
+      const last = document.getElementById("water-last");
+      const next = document.getElementById("water-next");
+
+      if (!waterState.lastRefillDate) {
+        counter.textContent = "0 of 3 days";
+        last.textContent = "Last refill: none yet.";
+        next.textContent = "Next refill: in 3 days.";
+        return;
+      }
+
+      const lastRefill = new Date(waterState.lastRefillDate);
+      const today = new Date();
+      const diffMs = today - lastRefill;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const currentDay = Math.min(diffDays + 1, 3);
+
+      counter.textContent = `${currentDay} of 3 days`;
+      last.innerHTML =
+        `<strong>Last refill:</strong> ${formatDateLabel(lastRefill)} at ${formatTime(lastRefill)}`;
+
+      const remaining = Math.max(3 - currentDay, 0);
+      if (remaining === 0) {
+        next.textContent = "Next refill: today!";
+      } else if (remaining === 1) {
+        next.textContent = "Next refill: in 1 day.";
+      } else {
+        next.textContent = `Next refill: in ${remaining} days.`;
+      }
+    }
+
+    function renderActivity(showFull = false) {
+      const listEl = document.getElementById("activity-list");
+      const summaryEl = document.getElementById("activity-summary");
+
+      const today = todayString();
+      const todayEntries = history.filter(h => h.timestamp.slice(0, 10) === today);
+
+      summaryEl.textContent = `${todayEntries.length} actions today`;
+
+      const entriesToShow = showFull ? history.slice().reverse() : todayEntries.slice().reverse();
+
+      listEl.innerHTML = "";
+      if (entriesToShow.length === 0) {
+        listEl.innerHTML = "<div class='activity-text-sub'>No activity yet.</div>";
+        return;
+      }
+
+      entriesToShow.forEach(entry => {
+        const dt = new Date(entry.timestamp);
+        const item = document.createElement("div");
+        item.className = "activity-item";
+
+        const icon = document.createElement("img");
+        icon.className = "activity-icon";
+        icon.src = entry.type === "feed" ? ICONS.feed : ICONS.water;
+        icon.alt = entry.type === "feed" ? "Food" : "Water";
+
+        const textWrap = document.createElement("div");
+        const main = document.createElement("div");
+        main.className = "activity-text-main";
+        main.textContent = `${formatDateLabel(dt)} ${formatTime(dt)} — ${entry.action}`;
+
+        const sub = document.createElement("div");
+        sub.className = "activity-text-sub";
+        sub.textContent = entry.user;
+
+        textWrap.appendChild(main);
+        textWrap.appendChild(sub);
+
+        item.appendChild(icon);
+        item.appendChild(textWrap);
+        listEl.appendChild(item);
+      });
+    }
+
+    function showUserOverlayIfNeeded() {
+      const overlay = document.getElementById("user-overlay");
+      overlay.style.display = currentUser ? "none" : "flex";
+    }
+
+    function setupEvents() {
+      document.querySelectorAll(".user-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentUser = btn.dataset.user;
+          saveState();
+          showUserOverlayIfNeeded();
+          renderActivity();
+        });
+      });
+
+      document.getElementById("btn-feed").addEventListener("click", () => {
+        ensureDailyReset();
+        if (feedingState.count < 2) {
+          feedingState.count += 1;
+        } else {
+          feedingState.count = 2;
+        }
+        feedingState.last = new Date().toISOString();
+        feedingState.lastUser = currentUser || "Unknown";
+        saveState();
+        renderFeeding();
+        addHistory("feed");
+      });
+
+      document.getElementById("btn-water").addEventListener("click", () => {
+        waterState.lastRefillDate = new Date().toISOString();
+        saveState();
+        renderWater();
+        addHistory("water");
+      });
+
+      let showingFull = false;
+      const toggleBtn = document.getElementById("toggle-history");
+      toggleBtn.addEventListener("click", () => {
+        showingFull = !showingFull;
+        toggleBtn.textContent = showingFull ? "View today's activity" : "View full history";
+        renderActivity(showingFull);
+      });
+    }
+
+    loadState();
+    ensureDailyReset();
+    saveState();
+    renderFeeding();
+    renderWater();
+    renderActivity();
+    showUserOverlayIfNeeded();
+    setupEvents();
+  </script>
+</body>
+</html>
