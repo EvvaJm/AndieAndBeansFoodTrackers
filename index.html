@@ -56,7 +56,6 @@
       max-width: 1000px;
     }
 
-    /* No big white outer card */
     .card {
       padding: 0;
       background: transparent;
@@ -142,12 +141,27 @@
       min-width: 110px;
     }
 
-    /* Feeding progress */
-    .feeding-body {
+    /* === FEEDING PROGRESS BAR (NEW) === */
+
+    .progress-wrapper {
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 16px;
       align-items: center;
+    }
+
+    .progress-labels {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 220px;
+      padding-left: 6px;
+    }
+
+    .progress-labels div {
+      font-size: 14px;
+      color: #ff6faf;
+      font-weight: 600;
     }
 
     .progress-bar {
@@ -155,8 +169,8 @@
       width: 70px;
       height: 220px;
       border-radius: 999px;
-      background: #fdf5ff;
-      border: 2px solid var(--light-purple);
+      background: #ffe6f0;
+      border: 2px solid #f7c9df;
       overflow: hidden;
     }
 
@@ -165,7 +179,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(to top, var(--pink), #ffd3ec);
+      background: #ff6faf;
       transition: height 0.25s ease-out;
     }
 
@@ -175,50 +189,74 @@
       transform: translateX(-50%);
       width: 80px;
       pointer-events: none;
+      transition: top 0.25s ease-out;
     }
 
-    .progress-labels {
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--text-dark);
+    /* === FEEDING LAST FED CARD === */
+
+    .last-fed-card {
+      background: #ffd3ec;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .feeding-info {
-      font-size: 13px;
-      color: var(--text-mid);
-      margin-top: 6px;
+    .last-fed-title {
+      font-size: 14px;
+      color: #3a1f5f;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
-    /* Water section */
-    .water-body {
-      text-align: center;
-    }
-
-    .water-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: var(--card-bg);
+    .last-fed-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ff2f92;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 22px;
+      gap: 6px;
     }
 
-    .water-main-img {
-      width: 160px;
-      margin: 8px auto 10px;
-      display: block;
+    .last-fed-divider {
+      height: 1px;
+      background: #f7a8d1;
+      margin: 8px 0;
     }
 
-    .water-text {
-      font-size: 13px;
-      color: var(--text-mid);
-      margin: 2px 0;
+    .last-fed-time {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ff2f92;
     }
 
-    .water-text strong {
-      color: var(--text-dark);
+    /* === WATER LAST REFILLED CARD === */
+
+    .water-card-inner {
+      background: #e6e2ff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .water-card-title {
+      font-size: 14px;
+      color: #3a1f5f;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .water-card-line {
+      height: 1px;
+      background: #c9c3ff;
+      margin: 8px 0;
+    }
+
+    .water-card-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7b4bb8;
     }
 
     /* Buttons */
@@ -304,20 +342,6 @@
     .activity-text-sub {
       font-size: 12px;
       color: var(--text-mid);
-    }
-
-    .history-toggle {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .history-toggle button {
-      border: none;
-      background: transparent;
-      color: var(--purple);
-      font-size: 13px;
-      text-decoration: underline;
-      cursor: pointer;
     }
 
     /* Onboarding overlay */
@@ -411,22 +435,27 @@
             <div class="section-counter" id="feeding-counter">0 of 2 feedings</div>
           </div>
 
-          <div class="feeding-body">
+          <div class="progress-wrapper">
             <div class="progress-bar">
               <div class="progress-fill" id="feeding-fill"></div>
               <img id="feeding-dogs" class="progress-dogs" src="assets/ProgressBarDoubleDog.png" alt="">
             </div>
 
-            <div>
-              <div class="progress-labels">
-                <div>0 — Time to eat!</div>
-                <div>1 — Halfway!</div>
-                <div>2 — All done!</div>
-              </div>
-              <div class="feeding-info" id="feeding-last">
-                No feedings yet today.
-              </div>
+            <div class="progress-labels">
+              <div>– Time to eat</div>
+              <div>– Halfway</div>
+              <div>– All done</div>
             </div>
+          </div>
+
+          <div class="last-fed-card" id="last-fed-card">
+            <div class="last-fed-title">Last fed by:</div>
+            <div class="last-fed-name">
+              <span id="last-fed-name">None yet</span>
+              <img src="assets/PinkHeart.png" style="width:16px;height:16px;">
+            </div>
+            <div class="last-fed-divider"></div>
+            <div class="last-fed-time" id="last-fed-time">Today at --:--</div>
           </div>
 
           <button class="btn btn-feed" id="btn-feed">
@@ -444,8 +473,16 @@
 
           <div class="water-body">
             <img class="water-main-img" src="assets/WaterBowlImageBig.png" alt="Water bowl">
-            <div class="water-text" id="water-last">Last refill: none yet.</div>
-            <div class="water-text" id="water-next">Next refill: in 3 days.</div>
+          </div>
+
+          <div class="water-card-inner">
+            <div class="water-card-title">Last refilled:</div>
+            <div class="water-card-text" id="water-last">Today at --:--</div>
+
+            <div class="water-card-line"></div>
+
+            <div class="water-card-title">Next refill due:</div>
+            <div class="water-card-text" id="water-next">3 days ❤️</div>
           </div>
 
           <button class="btn btn-water" id="btn-water">
@@ -462,9 +499,6 @@
           <div class="activity-summary" id="activity-summary">0 actions today</div>
         </div>
         <div class="activity-list" id="activity-list"></div>
-        <div class="history-toggle">
-          <button id="toggle-history">View full history</button>
-        </div>
       </div>
 
     </div>
@@ -539,200 +573,4 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEYS.user, currentUser || "");
-      localStorage.setItem(STORAGE_KEYS.feeding, JSON.stringify(feedingState));
-      localStorage.setItem(STORAGE_KEYS.water, JSON.stringify(waterState));
-      localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
-    }
-
-    function loadState() {
-      currentUser = localStorage.getItem(STORAGE_KEYS.user) || null;
-      feedingState = JSON.parse(localStorage.getItem(STORAGE_KEYS.feeding) || '{"date":null,"count":0,"last":null,"lastUser":null}');
-      waterState = JSON.parse(localStorage.getItem(STORAGE_KEYS.water) || '{"lastRefillDate":null}');
-      history = JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || "[]");
-    }
-
-    function ensureDailyReset() {
-      const today = todayString();
-      if (feedingState.date !== today) {
-        feedingState.date = today;
-        feedingState.count = 0;
-        feedingState.last = null;
-        feedingState.lastUser = null;
-      }
-    }
-
-    function addHistory(type) {
-      history.push({
-        timestamp: new Date().toISOString(),
-        action: type === "feed" ? "Fed Andie & Beans" : "Refilled water",
-        type,
-        user: currentUser || "Unknown"
-      });
-
-      const cutoff = new Date();
-      cutoff.setDate(cutoff.getDate() - 7);
-      history = history.filter(h => new Date(h.timestamp) >= cutoff);
-
-      saveState();
-      renderActivity();
-    }
-
-    function renderFeeding() {
-      const counter = document.getElementById("feeding-counter");
-      const fill = document.getElementById("feeding-fill");
-      const dogs = document.getElementById("feeding-dogs");
-      const last = document.getElementById("feeding-last");
-
-      const count = feedingState.count;
-      counter.textContent = `${count} of 2 feedings`;
-
-      fill.style.height = `${(count / 2) * 100}%`;
-
-      const barHeight = 220;
-      const dogsHeight = 80;
-      const available = barHeight - dogsHeight;
-      dogs.style.top = `${barHeight - dogsHeight - (count / 2) * available}px`;
-
-      if (feedingState.last) {
-        const dt = new Date(feedingState.last);
-        last.innerHTML =
-          `<strong>Last fed by:</strong> ${feedingState.lastUser}<br>` +
-          `${formatDateLabel(dt)} at ${formatTime(dt)}`;
-      } else {
-        last.textContent = "No feedings yet today.";
-      }
-    }
-
-    function renderWater() {
-      const counter = document.getElementById("water-counter");
-      const last = document.getElementById("water-last");
-      const next = document.getElementById("water-next");
-
-      if (!waterState.lastRefillDate) {
-        counter.textContent = "0 of 3 days";
-        last.textContent = "Last refill: none yet.";
-        next.textContent = "Next refill: in 3 days.";
-        return;
-      }
-
-      const lastRefill = new Date(waterState.lastRefillDate);
-      const today = new Date();
-      const diffMs = today - lastRefill;
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const currentDay = Math.min(diffDays + 1, 3);
-
-      counter.textContent = `${currentDay} of 3 days`;
-      last.innerHTML =
-        `<strong>Last refill:</strong> ${formatDateLabel(lastRefill)} at ${formatTime(lastRefill)}`;
-
-      const remaining = Math.max(3 - currentDay, 0);
-      if (remaining === 0) {
-        next.textContent = "Next refill: today!";
-      } else if (remaining === 1) {
-        next.textContent = "Next refill: in 1 day.";
-      } else {
-        next.textContent = `Next refill: in ${remaining} days.`;
-      }
-    }
-
-    function renderActivity(showFull = false) {
-      const listEl = document.getElementById("activity-list");
-      const summaryEl = document.getElementById("activity-summary");
-
-      const today = todayString();
-      const todayEntries = history.filter(h => h.timestamp.slice(0, 10) === today);
-
-      summaryEl.textContent = `${todayEntries.length} actions today`;
-
-      const entriesToShow = showFull ? history.slice().reverse() : todayEntries.slice().reverse();
-
-      listEl.innerHTML = "";
-      if (entriesToShow.length === 0) {
-        listEl.innerHTML = "<div class='activity-text-sub'>No activity yet.</div>";
-        return;
-      }
-
-      entriesToShow.forEach(entry => {
-        const dt = new Date(entry.timestamp);
-        const item = document.createElement("div");
-        item.className = "activity-item";
-
-        const icon = document.createElement("img");
-        icon.className = "activity-icon";
-        icon.src = entry.type === "feed" ? ICONS.feed : ICONS.water;
-        icon.alt = entry.type === "feed" ? "Food" : "Water";
-
-        const textWrap = document.createElement("div");
-        const main = document.createElement("div");
-        main.className = "activity-text-main";
-        main.textContent = `${formatDateLabel(dt)} ${formatTime(dt)} — ${entry.action}`;
-
-        const sub = document.createElement("div");
-        sub.className = "activity-text-sub";
-        sub.textContent = entry.user;
-
-        textWrap.appendChild(main);
-        textWrap.appendChild(sub);
-
-        item.appendChild(icon);
-        item.appendChild(textWrap);
-        listEl.appendChild(item); 
-      });
-    }
-
-    function showUserOverlayIfNeeded() {
-      const overlay = document.getElementById("user-overlay");
-      overlay.style.display = currentUser ? "none" : "flex";
-    }
-
-    function setupEvents() {
-      document.querySelectorAll(".user-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          currentUser = btn.dataset.user;
-          saveState();
-          showUserOverlayIfNeeded();
-          renderActivity();
-        });
-      });
-
-      document.getElementById("btn-feed").addEventListener("click", () => {
-        ensureDailyReset();
-        if (feedingState.count < 2) {
-          feedingState.count += 1;
-        } else {
-          feedingState.count = 2;
-        }
-        feedingState.last = new Date().toISOString();
-        feedingState.lastUser = currentUser || "Unknown";
-        saveState();
-        renderFeeding();
-        addHistory("feed");
-      });
-
-      document.getElementById("btn-water").addEventListener("click", () => {
-        waterState.lastRefillDate = new Date().toISOString();
-        saveState();
-        renderWater();
-        addHistory("water");
-      });
-
-      let showingFull = false;
-      const toggleBtn = document.getElementById("toggle-history");
-      toggleBtn.addEventListener("click", () => {
-        showingFull = !showingFull;
-        toggleBtn.textContent = showingFull ? "View today's activity" : "View full history";
-        renderActivity(showingFull);
-      });
-    }
-
-    loadState();
-    ensureDailyReset();
-    saveState();
-    renderFeeding();
-    renderWater();
-    renderActivity();
-    showUserOverlayIfNeeded();
-    setupEvents();
-  </script>
-</body>
-</html>
+      localStorage.setItem(ST
