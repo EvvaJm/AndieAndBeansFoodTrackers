@@ -34,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* Background decorations */
     .bg-decor img {
       position: absolute;
       opacity: 0.35;
@@ -62,7 +61,6 @@
       box-shadow: none;
     }
 
-    /* Header */
     .header {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -89,7 +87,6 @@
       }
     }
 
-    /* Main grid */
     .main-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -141,8 +138,6 @@
       min-width: 110px;
     }
 
-    /* === FEEDING PROGRESS BAR (NEW) === */
-
     .progress-wrapper {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -192,8 +187,6 @@
       transition: top 0.25s ease-out;
     }
 
-    /* === FEEDING LAST FED CARD === */
-
     .last-fed-card {
       background: #ffd3ec;
       border-radius: 16px;
@@ -230,8 +223,6 @@
       color: #ff2f92;
     }
 
-    /* === WATER LAST REFILLED CARD === */
-
     .water-card-inner {
       background: #e6e2ff;
       border-radius: 16px;
@@ -259,7 +250,6 @@
       color: #7b4bb8;
     }
 
-    /* Buttons */
     .btn {
       margin-top: 12px;
       width: 100%;
@@ -284,7 +274,6 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     }
 
-    /* Activity */
     .activity-card {
       border-radius: 20px;
       padding: 18px 20px 20px;
@@ -344,7 +333,6 @@
       color: var(--text-mid);
     }
 
-    /* Onboarding overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -399,11 +387,59 @@
     .user-btn:nth-child(odd) {
       background: var(--purple);
     }
+
+    .feed-popup-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .feed-popup-card {
+      background: #ffd3ec;
+      border-radius: 18px;
+      padding: 16px 18px 18px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: #3a1f5f;
+    }
+
+    .feed-popup-card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .feed-popup-text {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .feed-popup-ok {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      background: #ff6faf;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .feed-popup-ok:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
   </style>
 </head>
 <body>
-
-  <!-- Background decorations -->
   <div class="bg-decor">
     <img class="paw1" src="assets/DarkPurpleDogPaw.png" alt="">
     <img class="paw2" src="assets/LightPurpleDogPaw.png" alt="">
@@ -414,8 +450,6 @@
 
   <div class="app">
     <div class="card">
-
-      <!-- Header -->
       <div class="header">
         <img class="header-dog" src="assets/AndieHeadshot.png" alt="Andie">
         <div class="header-title">
@@ -424,10 +458,7 @@
         <img class="header-dog" src="assets/BeansHeadhsot.png" alt="Beans">
       </div>
 
-      <!-- Main grid -->
       <div class="main-grid">
-
-        <!-- Feeding -->
         <div class="section-card feeding">
           <div class="section-top">
             <img class="section-icon" src="assets/FoodBowlImage.png" alt="Food bowl">
@@ -440,7 +471,6 @@
               <div class="progress-fill" id="feeding-fill"></div>
               <img id="feeding-dogs" class="progress-dogs" src="assets/ProgressBarDoubleDog.png" alt="">
             </div>
-
             <div class="progress-labels">
               <div>– Time to eat</div>
               <div>– Halfway</div>
@@ -463,7 +493,6 @@
           </button>
         </div>
 
-        <!-- Water -->
         <div class="section-card water">
           <div class="section-top">
             <div class="water-icon">💧</div>
@@ -489,10 +518,8 @@
             I REFILLED THE WATER!
           </button>
         </div>
-
       </div>
 
-      <!-- Activity -->
       <div class="activity-card">
         <div class="activity-header">
           <div class="activity-title">TODAY'S ACTIVITY</div>
@@ -500,11 +527,9 @@
         </div>
         <div class="activity-list" id="activity-list"></div>
       </div>
-
     </div>
   </div>
 
-  <!-- Onboarding overlay -->
   <div class="overlay" id="user-overlay" style="display:none;">
     <div class="overlay-card">
       <div class="overlay-title">Who’s using the app?</div>
@@ -520,12 +545,18 @@
     </div>
   </div>
 
-  <script>
-    const ICONS = {
-      feed: "assets/FoodBowlImage.png",
-      water: "assets/LittleWaterBowl.png"
-    };
+  <div class="feed-popup-overlay" id="feed-popup">
+    <div class="feed-popup-card">
+      <img src="assets/FoodBowlImage.png" alt="Food bowl">
+      <div class="feed-popup-text">
+        Whoa there! These weenie dogs are stuffed!<br>
+        No more food today 💕
+      </div>
+      <button class="feed-popup-ok" id="feed-popup-ok">OK</button>
+    </div>
+  </div>
 
+  <script>
     const STORAGE_KEYS = {
       user: "andiebeans_user",
       feeding: "andiebeans_feeding",
@@ -573,4 +604,226 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEYS.user, currentUser || "");
-      localStorage.setItem(ST
+      localStorage.setItem(STORAGE_KEYS.feeding, JSON.stringify(feedingState));
+      localStorage.setItem(STORAGE_KEYS.water, JSON.stringify(waterState));
+      localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
+    }
+
+    function loadState() {
+      const user = localStorage.getItem(STORAGE_KEYS.user);
+      currentUser = user || null;
+
+      const feedingRaw = localStorage.getItem(STORAGE_KEYS.feeding);
+      if (feedingRaw) {
+        try {
+          feedingState = JSON.parse(feedingRaw);
+        } catch {}
+      }
+
+      const waterRaw = localStorage.getItem(STORAGE_KEYS.water);
+      if (waterRaw) {
+        try {
+          waterState = JSON.parse(waterRaw);
+        } catch {}
+      }
+
+      const historyRaw = localStorage.getItem(STORAGE_KEYS.history);
+      if (historyRaw) {
+        try {
+          history = JSON.parse(historyRaw);
+        } catch {}
+      }
+
+      const today = todayString();
+      if (feedingState.date !== today) {
+        feedingState.date = today;
+        feedingState.count = 0;
+        feedingState.last = null;
+        feedingState.lastUser = null;
+      }
+    }
+
+    function renderFeeding() {
+      const count = feedingState.count;
+      document.getElementById("feeding-counter").textContent = `${count} of 2 feedings`;
+
+      const fill = document.getElementById("feeding-fill");
+      fill.style.height = `${(count / 2) * 100}%`;
+
+      const dogs = document.getElementById("feeding-dogs");
+      const barHeight = 220;
+      const dogsHeight = 80;
+      const available = barHeight - dogsHeight;
+      const topPx = barHeight - dogsHeight - (count / 2) * available;
+      dogs.style.top = `${topPx}px`;
+
+      const nameEl = document.getElementById("last-fed-name");
+      const timeEl = document.getElementById("last-fed-time");
+
+      if (feedingState.last) {
+        const dt = new Date(feedingState.last);
+        nameEl.textContent = feedingState.lastUser || "Unknown";
+        timeEl.textContent = `${formatDateLabel(dt)} at ${formatTime(dt)}`;
+      } else {
+        nameEl.textContent = "None yet";
+        timeEl.textContent = "Today at --:--";
+      }
+    }
+
+    function renderWater() {
+      const counter = document.getElementById("water-counter");
+      const lastEl = document.getElementById("water-last");
+      const nextEl = document.getElementById("water-next");
+
+      if (!waterState.lastRefillDate) {
+        counter.textContent = "0 of 3 days";
+        lastEl.textContent = "Today at --:--";
+        nextEl.textContent = "3 days ❤️";
+        return;
+      }
+
+      const lastRefill = new Date(waterState.lastRefillDate);
+      const today = new Date();
+      const diffMs = today - lastRefill;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const currentDay = Math.min(diffDays + 1, 3);
+
+      counter.textContent = `${currentDay} of 3 days`;
+      lastEl.textContent = `${formatDateLabel(lastRefill)} at ${formatTime(lastRefill)}`;
+
+      const remaining = Math.max(3 - currentDay, 0);
+      nextEl.textContent = remaining === 0 ? "Today ❤️" : `${remaining} days ❤️`;
+    }
+
+    function renderActivity() {
+      const listEl = document.getElementById("activity-list");
+      const summaryEl = document.getElementById("activity-summary");
+      listEl.innerHTML = "";
+
+      const today = todayString();
+      const todays = history.filter(h => h.date === today);
+
+      summaryEl.textContent = `${todays.length} actions today`;
+
+      todays
+        .sort((a, b) => new Date(b.time) - new Date(a.time))
+        .forEach(item => {
+          const row = document.createElement("div");
+          row.className = "activity-item";
+
+          const icon = document.createElement("img");
+          icon.className = "activity-icon";
+          icon.src = item.type === "feed" ? "assets/FoodBowlImage.png" : "assets/LittleWaterBowl.png";
+          icon.alt = item.type === "feed" ? "Feeding" : "Water";
+
+          const textWrap = document.createElement("div");
+          const main = document.createElement("div");
+          main.className = "activity-text-main";
+          main.textContent =
+            item.type === "feed"
+              ? `${item.user} fed Andie & Beans`
+              : `${item.user} refilled the water`;
+
+          const sub = document.createElement("div");
+          sub.className = "activity-text-sub";
+          const dt = new Date(item.time);
+          sub.textContent = `${formatDateLabel(dt)} at ${formatTime(dt)}`;
+
+          textWrap.appendChild(main);
+          textWrap.appendChild(sub);
+
+          row.appendChild(icon);
+          row.appendChild(textWrap);
+          listEl.appendChild(row);
+        });
+    }
+
+    function showUserOverlayIfNeeded() {
+      const overlay = document.getElementById("user-overlay");
+      if (!currentUser) {
+        overlay.style.display = "flex";
+      } else {
+        overlay.style.display = "none";
+      }
+
+      document.querySelectorAll(".user-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentUser = btn.getAttribute("data-user");
+          saveState();
+          overlay.style.display = "none";
+        });
+      });
+    }
+
+    function showFeedPopup() {
+      document.getElementById("feed-popup").style.display = "flex";
+    }
+
+    function hideFeedPopup() {
+      document.getElementById("feed-popup").style.display = "none";
+    }
+
+    function handleFeedClick() {
+      const today = todayString();
+      if (feedingState.date !== today) {
+        feedingState.date = today;
+        feedingState.count = 0;
+        feedingState.last = null;
+        feedingState.lastUser = null;
+      }
+
+      if (feedingState.count >= 2) {
+        showFeedPopup();
+        return;
+      }
+
+      feedingState.count += 1;
+      feedingState.last = new Date().toISOString();
+      feedingState.lastUser = currentUser || "Unknown";
+
+      history.push({
+        type: "feed",
+        user: feedingState.lastUser,
+        time: feedingState.last,
+        date: today
+      });
+
+      saveState();
+      renderFeeding();
+      renderActivity();
+    }
+
+    function handleWaterClick() {
+      const now = new Date().toISOString();
+      const today = todayString();
+
+      waterState.lastRefillDate = now;
+
+      history.push({
+        type: "water",
+        user: currentUser || "Unknown",
+        time: now,
+        date: today
+      });
+
+      saveState();
+      renderWater();
+      renderActivity();
+    }
+
+    function init() {
+      loadState();
+      renderFeeding();
+      renderWater();
+      renderActivity();
+      showUserOverlayIfNeeded();
+
+      document.getElementById("btn-feed").addEventListener("click", handleFeedClick);
+      document.getElementById("btn-water").addEventListener("click", handleWaterClick);
+      document.getElementById("feed-popup-ok").addEventListener("click", hideFeedPopup);
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
