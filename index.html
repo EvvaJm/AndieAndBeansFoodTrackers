@@ -1,266 +1,649 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Andie & Beans Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andie & Beans Tracker</title>
+  <style>
+    /* === GLOBAL STYLES === */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f9f6ff;
+      color: #3a1f5f;
+      overflow-x: hidden;
+    }
 
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    margin: 0;
-    padding: 0;
-  }
+    .bg-decor img {
+      position: absolute;
+      opacity: 0.15;
+      z-index: 0;
+    }
 
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    background: #fff;
-    border-bottom: 2px solid #eee;
-  }
+    .paw1 { top: 20px; left: 30px; width: 80px; }
+    .paw2 { top: 200px; right: 40px; width: 100px; }
+    .paw3 { bottom: 60px; left: 50px; width: 90px; }
+    .heart1 { top: 120px; left: 50%; transform: translateX(-50%); width: 60px; }
+    .heart2 { bottom: 100px; right: 30px; width: 70px; }
 
-  header img {
-    height: 60px;
-    width: auto;
-    border-radius: 10px;
-  }
+    .app {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-  header h1 {
-    font-size: 20px;
-    margin: 0 10px;
-    flex-grow: 1;
-    text-align: center;
-  }
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      text-align: center;
+    }
 
-  .card {
-    background: #fff;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
 
-  .feeding-layout {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+    .header-dog {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
 
-  .progress-container {
-    width: 40%;
-  }
+    .header-title img {
+      width: 160px;
+    }
 
-  .progress-bar {
-    width: 100%;
-    height: 20px;
-    background: #eee;
-    border-radius: 10px;
-    overflow: hidden;
-  }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
 
-  .progress-fill {
-    height: 100%;
-    background: #ffb347;
-    width: 0%;
-    transition: width 0.3s ease;
-  }
+    .section-card {
+      background: #f4eaff;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      position: relative;
+    }
 
-  .feeding-info {
-    width: 55%;
-    text-align: right;
-  }
+    .section-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
 
-  button {
-    background: #ffb347;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+    .section-icon {
+      width: 40px;
+      height: 40px;
+    }
 
-  #popup {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #ffb347;
-    padding: 15px 20px;
-    border-radius: 10px;
-    display: none;
-    font-size: 16px;
-  }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #3a1f5f;
+    }
 
-  #activity-list {
-    margin-top: 10px;
-  }
+    .section-counter {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b4fa3;
+    }
 
-  .activity-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-  }
-</style>
+    /* === FEEDING SECTION === */
+    .feeding .progress-wrapper {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .progress-bar {
+      position: relative;
+      width: 60px;
+      height: 220px;
+      background: #e3d7ff;
+      border-radius: 30px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(180deg, #b38cff, #7b4fff);
+      transition: height 0.3s ease;
+    }
+
+    .progress-dogs {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      transition: top 0.3s ease;
+    }
+
+    .progress-labels {
+      font-size: 12px;
+      color: #6b4fa3;
+      text-align: left;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .last-fed-card {
+      background: #ffe6f3;
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .last-fed-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3a1f5f;
+    }
+
+    .last-fed-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .last-fed-divider {
+      height: 1px;
+      background: #d9b8e8;
+      margin: 8px 0;
+    }
+
+    .last-fed-time {
+      font-size: 13px;
+      color: #6b4fa3;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      transition: transform 0.1s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-feed {
+      background: #ff6faf;
+      margin-top: 10px;
+    }
+
+    .btn-water {
+      background: #7b4fff;
+      margin-top: 10px;
+    }
+
+    /* === FEED POPUP CARD === */
+    .feed-popup-card {
+      background: #ffd3ec;
+      border-radius: 18px;
+      padding: 16px 18px 18px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: #3a1f5f;
+    }
+
+    .feed-popup-card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    .feed-popup-text {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .feed-popup-ok {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      background: #ff6faf;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .feed-popup-ok:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* === RESPONSIVE IMPROVEMENTS === */
+    @media (max-width: 480px) {
+      .card {
+        padding: 16px;
+      }
+      .header-dog {
+        width: 60px;
+        height: 60px;
+      }
+      .header-title img {
+        width: 120px;
+      }
+      .progress-bar {
+        height: 180px;
+      }
+      .activity-card {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="bg-decor">
+    <img class="paw1" src="assets/DarkPurpleDogPaw.png" alt="">
+    <img class="paw2" src="assets/LightPurpleDogPaw.png" alt="">
+    <img class="paw3" src="assets/MediumPurpleDogPaw.png" alt="">
+    <img class="heart1" src="assets/PinkHeart.png" alt="">
+    <img class="heart2" src="assets/PinkHeart.png" alt="">
+  </div>
 
-<header>
-  <img src="andie.jpg" alt="Andie">
-  <h1>Andie & Beans Tracker</h1>
-  <img src="beans.jpg" alt="Beans">
-</header>
+  <div class="app">
+    <div class="card">
+      <div class="header">
+        <img class="header-dog" src="assets/AndieHeadshot.png" alt="Andie">
+        <div class="header-title">
+          <img src="assets/NamesHeader.png" alt="Andie & Beans">
+        </div>
+        <img class="header-dog" src="assets/BeansHeadhsot.png" alt="Beans">
+      </div>
 
-<div id="popup"></div>
+      <div class="main-grid">
+        <!-- FEEDING SECTION -->
+        <div class="section-card feeding">
+          <div class="section-top">
+            <img class="section-icon" src="assets/FoodBowlImage.png" alt="Food bowl">
+            <div class="section-title">Feeding</div>
+            <div class="section-counter" id="feeding-counter">0 of 2 feedings</div>
+          </div>
 
-<div class="card" id="feeding-card">
-  <h2>Feeding</h2>
-  <div class="feeding-layout">
-    <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-fill" id="feeding-progress"></div>
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div class="progress-fill" id="feeding-fill"></div>
+              <img id="feeding-dogs" class="progress-dogs" src="assets/ProgressBarDoubleDog.png" alt="">
+            </div>
+            <div class="progress-labels">
+              <div>– Time to eat</div>
+              <div>– Halfway</div>
+              <div>– All done</div>
+            </div>
+          </div>
+
+          <div class="last-fed-card" id="last-fed-card">
+            <div class="last-fed-title">Last fed by:</div>
+            <div class="last-fed-name">
+              <span id="last-fed-name">None yet</span>
+              <img src="assets/PinkHeart.png" style="width:16px;height:16px;">
+            </div>
+            <div class="last-fed-divider"></div>
+            <div class="last-fed-time" id="last-fed-time">Today at --:--</div>
+          </div>
+
+          <button class="btn btn-feed" id="btn-feed">
+            I FED ANDIE &amp; BEANS!
+          </button>
+        </div>
+
+        <!-- WATER SECTION -->
+        <div class="section-card water">
+          <div class="section-top">
+            <div class="water-icon">💧</div>
+            <div class="section-title">Water</div>
+            <div class="section-counter" id="water-counter">0 of 3 days</div>
+          </div>
+
+          <div class="water-body">
+            <img class="water-main-img" src="assets/WaterBowlImageBig.png" alt="Water bowl">
+          </div>
+
+          <div class="water-card-inner">
+            <div class="water-card-title">Last refilled:</div>
+            <div class="water-card-text" id="water-last">Today at --:--</div>
+
+            <div class="water-card-line"></div>
+
+            <div class="water-card-title">Next refill due:</div>
+            <div class="water-card-text" id="water-next">3 days ❤️</div>
+          </div>
+
+          <button class="btn btn-water" id="btn-water">
+            I REFILLED THE WATER!
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTIVITY SECTION -->
+      <div class="activity-card">
+        <div class="activity-header">
+          <div class="activity-title">TODAY'S ACTIVITY</div>
+          <div class="activity-summary" id="activity-summary">0 actions today</div>
+        </div>
+        <div class="activity-list" id="activity-list"></div>
       </div>
     </div>
+  </div>
 
-    <div class="feeding-info">
-      <div id="feeding-status">Not fed yet</div>
-      <button id="feed-btn">I FED ANDIE & BEANS</button>
+  <!-- USER OVERLAY -->
+  <div class="overlay" id="user-overlay" style="display:none;">
+    <div class="overlay-card">
+      <div class="overlay-title">Who’s using the app?</div>
+      <div class="overlay-subtitle">
+        Choose your name so we can track who fed Andie &amp; Beans.
+      </div>
+      <div class="user-buttons">
+        <button class="user-btn" data-user="Evva">Evva</button>
+        <button class="user-btn" data-user="Jeff">Jeff</button>
+        <button class="user-btn" data-user="Stef">Stef</button>
+        <button class="user-btn" data-user="Cadence">Cadence</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="card" id="water-card">
-  <h2>Water</h2>
-  <button id="water-btn">Refilled Water</button>
-  <div id="water-status">Not refilled yet</div>
-</div>
+  <!-- FEED POPUP -->
+  <div class="feed-popup-overlay" id="feed-popup">
+    <div class="feed-popup-card">
+      <img src="assets/FoodBowlImage.png" alt="Food bowl">
+      <div class="feed-popup-text">
+        Whoa there! These weenie dogs are stuffed!<br>
+        No more food today 💕
+      </div>
+      <button class="feed-popup-ok" id="feed-popup-ok">OK</button>
+    </div>
+  </div>
+  <script type="module">
+    // === FIREBASE SETUP ===
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-<div class="card" id="activity-card">
-  <h2>Today's Activity</h2>
-  <button id="activity-btn">Add Activity</button>
-  <div id="activity-list"></div>
-</div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnpWl5QPg8QtAlu3DZWpAKUlTDzlUXi0w",
+      authDomain: "andie-beans-tracker.firebaseapp.com",
+      databaseURL: "https://andie-beans-tracker-default-rtdb.firebaseio.com",
+      projectId: "andie-beans-tracker",
+      storageBucket: "andie-beans-tracker.firebasestorage.app",
+      messagingSenderId: "63969584848",
+      appId: "1:63969584848:web:b4376734f6ebdea6d5e0d5"
+    };
 
-<!-- Firebase CDN -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBnpWl5QPg8QtAlu3DZWpAKUlTDzlUXi0w",
-    authDomain: "andie-beans-tracker.firebaseapp.com",
-    databaseURL: "https://andie-beans-tracker-default-rtdb.firebaseio.com",
-    projectId: "andie-beans-tracker",
-    storageBucket: "andie-beans-tracker.firebasestorage.app",
-    messagingSenderId: "63969584848",
-    appId: "1:63969584848:web:b4376734f6ebdea6d5e0d5"
-  };
+    // === STATE VARIABLES ===
+    let currentUser = null;
+    let feedingState = { date: null, count: 0, last: null, lastUser: null };
+    let waterState = { lastRefillDate: null };
+    let history = [];
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  /* ONE-TIME RESET */
-  db.ref("/__reset_done").once("value").then(s => {
-    if (!s.exists()) {
-      db.ref("/feeding").remove();
-      db.ref("/water").remove();
-      db.ref("/activity").remove();
-      db.ref("/popup").remove();
-      db.ref("/user").remove();
-      db.ref("/__reset_done").set(true);
+    // === UTILITY FUNCTIONS ===
+    function todayString() {
+      return new Date().toISOString().slice(0, 10);
     }
-  });
 
-  /* FEEDING */
-  const feedBtn = document.getElementById("feed-btn");
-  const feedingStatus = document.getElementById("feeding-status");
-  const feedingProgress = document.getElementById("feeding-progress");
-
-  feedBtn.onclick = () => {
-    const now = new Date().toLocaleString();
-    db.ref("/feeding").set({
-      fed: true,
-      time: now,
-      user: "Evva"
-    });
-    db.ref("/popup").set("Fed by Evva at " + now);
-  };
-
-  db.ref("/feeding").on("value", snap => {
-    const data = snap.val();
-    if (!data) {
-      feedingStatus.textContent = "Not fed yet";
-      feedingProgress.style.width = "0%";
-      return;
+    function formatTime(dt) {
+      const d = new Date(dt);
+      const hours = d.getHours();
+      const minutes = d.getMinutes().toString().padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const h12 = hours % 12 || 12;
+      return `${h12}:${minutes} ${ampm}`;
     }
-    feedingStatus.textContent = `Fed by ${data.user} at ${data.time}`;
-    feedingProgress.style.width = "100%";
-  });
 
-  /* WATER */
-  const waterBtn = document.getElementById("water-btn");
-  const waterStatus = document.getElementById("water-status");
-
-  waterBtn.onclick = () => {
-    const now = new Date().toLocaleString();
-    db.ref("/water").set({
-      time: now,
-      user: "Evva"
-    });
-    db.ref("/popup").set("Water refilled by Evva at " + now);
-  };
-
-  db.ref("/water").on("value", snap => {
-    const data = snap.val();
-    if (!data) {
-      waterStatus.textContent = "Not refilled yet";
-      return;
+    function formatDateLabel(dt) {
+      const d = new Date(dt);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+      const sameDay = (a, b) =>
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+      if (sameDay(d, today)) return "Today";
+      if (sameDay(d, yesterday)) return "Yesterday";
+      return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
     }
-    waterStatus.textContent = `Refilled by ${data.user} at ${data.time}`;
-  });
 
-  /* ACTIVITY */
-  const activityBtn = document.getElementById("activity-btn");
-  const activityList = document.getElementById("activity-list");
-
-  activityBtn.onclick = () => {
-    const now = new Date().toLocaleString();
-    const newItem = db.ref("/activity").push();
-    newItem.set({
-      text: "Activity added",
-      time: now,
-      user: "Evva"
-    });
-    db.ref("/popup").set("Activity added by Evva at " + now);
-  };
-
-  db.ref("/activity").on("value", snap => {
-    activityList.innerHTML = "";
-    snap.forEach(child => {
-      const item = child.val();
-      const div = document.createElement("div");
-      div.className = "activity-item";
-      div.textContent = `${item.text} — ${item.user} at ${item.time}`;
-      activityList.appendChild(div);
-    });
-  });
-
-  /* POPUP */
-  const popup = document.getElementById("popup");
-
-  db.ref("/popup").on("value", snap => {
-    const msg = snap.val();
-    if (!msg) {
-      popup.style.display = "none";
-      return;
+    // === FIREBASE SYNC ===
+    async function loadFromFirebase() {
+      try {
+        const snapshot = await get(child(ref(db), "state"));
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          feedingState = data.feedingState || feedingState;
+          waterState = data.waterState || waterState;
+          history = data.history || history;
+        }
+      } catch (err) {
+        console.error("Firebase load failed:", err);
+      }
     }
-    popup.textContent = msg;
-    popup.style.display = "block";
-    setTimeout(() => popup.style.display = "none", 3000);
-  });
-</script>
 
+    async function saveToFirebase() {
+      try {
+        await update(ref(db, "state"), {
+          feedingState,
+          waterState,
+          history
+        });
+      } catch (err) {
+        console.error("Firebase save failed:", err);
+      }
+    }
+
+    // === LOCAL FALLBACK ===
+    function saveLocal() {
+      localStorage.setItem("andiebeans_user", currentUser || "");
+      localStorage.setItem("andiebeans_feeding", JSON.stringify(feedingState));
+      localStorage.setItem("andiebeans_water", JSON.stringify(waterState));
+      localStorage.setItem("andiebeans_history", JSON.stringify(history));
+    }
+
+    function loadLocal() {
+      currentUser = localStorage.getItem("andiebeans_user") || null;
+      feedingState = JSON.parse(localStorage.getItem("andiebeans_feeding")) || feedingState;
+      waterState = JSON.parse(localStorage.getItem("andiebeans_water")) || waterState;
+      history = JSON.parse(localStorage.getItem("andiebeans_history")) || history;
+    }
+
+    // === RENDER FUNCTIONS ===
+    function renderFeeding() {
+      const count = feedingState.count;
+      document.getElementById("feeding-counter").textContent = `${count} of 2 feedings`;
+      const fill = document.getElementById("feeding-fill");
+      fill.style.height = `${(count / 2) * 100}%`;
+      const dogs = document.getElementById("feeding-dogs");
+      const barHeight = 220;
+      const dogsHeight = 80;
+      const available = barHeight - dogsHeight;
+      const topPx = barHeight - dogsHeight - (count / 2) * available;
+      dogs.style.top = `${topPx}px`;
+      const nameEl = document.getElementById("last-fed-name");
+      const timeEl = document.getElementById("last-fed-time");
+      if (feedingState.last) {
+        const dt = new Date(feedingState.last);
+        nameEl.textContent = feedingState.lastUser || "Unknown";
+        timeEl.textContent = `${formatDateLabel(dt)} at ${formatTime(dt)}`;
+      } else {
+        nameEl.textContent = "None yet";
+        timeEl.textContent = "Today at --:--";
+      }
+    }
+
+    function renderWater() {
+      const counter = document.getElementById("water-counter");
+      const lastEl = document.getElementById("water-last");
+      const nextEl = document.getElementById("water-next");
+      if (!waterState.lastRefillDate) {
+        counter.textContent = "0 of 3 days";
+        lastEl.textContent = "Today at --:--";
+        nextEl.textContent = "3 days ❤️";
+        return;
+      }
+      const lastRefill = new Date(waterState.lastRefillDate);
+      const today = new Date();
+      const diffMs = today - lastRefill;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const currentDay = Math.min(diffDays + 1, 3);
+      counter.textContent = `${currentDay} of 3 days`;
+      lastEl.textContent = `${formatDateLabel(lastRefill)} at ${formatTime(lastRefill)}`;
+      const remaining = Math.max(3 - currentDay, 0);
+      nextEl.textContent = remaining === 0 ? "Today ❤️" : `${remaining} days ❤️`;
+    }
+
+    function renderActivity() {
+      const listEl = document.getElementById("activity-list");
+      const summaryEl = document.getElementById("activity-summary");
+      listEl.innerHTML = "";
+      const today = todayString();
+      const todays = history.filter(h => h.date === today);
+      summaryEl.textContent = `${todays.length} actions today`;
+      todays.sort((a, b) => new Date(b.time) - new Date(a.time)).forEach(item => {
+        const row = document.createElement("div");
+        row.className = "activity-item";
+        const icon = document.createElement("img");
+        icon.className = "activity-icon";
+        icon.src = item.type === "feed" ? "assets/FoodBowlImage.png" : "assets/LittleWaterBowl.png";
+        icon.alt = item.type === "feed" ? "Feeding" : "Water";
+        const textWrap = document.createElement("div");
+        const main = document.createElement("div");
+        main.className = "activity-text-main";
+        main.textContent = item.type === "feed"
+          ? `${item.user} fed Andie & Beans`
+          : `${item.user} refilled the water`;
+        const sub = document.createElement("div");
+        sub.className = "activity-text-sub";
+        const dt = new Date(item.time);
+        sub.textContent = `${formatDateLabel(dt)} at ${formatTime(dt)}`;
+        textWrap.appendChild(main);
+        textWrap.appendChild(sub);
+        row.appendChild(icon);
+        row.appendChild(textWrap);
+        listEl.appendChild(row);
+      });
+    }
+
+    // === USER OVERLAY ===
+    function showUserOverlayIfNeeded() {
+      const overlay = document.getElementById("user-overlay");
+      if (!currentUser) overlay.style.display = "flex";
+      else overlay.style.display = "none";
+      document.querySelectorAll(".user-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentUser = btn.getAttribute("data-user");
+          saveLocal();
+          overlay.style.display = "none";
+        });
+      });
+    }
+
+    // === FEED POPUP ===
+    function showFeedPopup() {
+      document.getElementById("feed-popup").style.display = "flex";
+    }
+
+    function hideFeedPopup() {
+      document.getElementById("feed-popup").style.display = "none";
+    }
+
+    // === EVENT HANDLERS ===
+    async function handleFeedClick() {
+      const today = todayString();
+      if (feedingState.date !== today) {
+        feedingState.date = today;
+        feedingState.count = 0;
+        feedingState.last = null;
+        feedingState.lastUser = null;
+      }
+      if (feedingState.count >= 2) {
+        showFeedPopup();
+        return;
+      }
+      feedingState.count += 1;
+      feedingState.last = new Date().to
+            feedingState.last = new Date().toISOString();
+      feedingState.lastUser = currentUser;
+      history.push({
+        type: "feed",
+        user: currentUser,
+        date: today,
+        time: feedingState.last
+      });
+      renderFeeding();
+      renderActivity();
+      saveLocal();
+      await saveToFirebase();
+    }
+
+    async function handleWaterClick() {
+      waterState.lastRefillDate = new Date().toISOString();
+      history.push({
+        type: "water",
+        user: currentUser,
+        date: todayString(),
+        time: waterState.lastRefillDate
+      });
+      renderWater();
+      renderActivity();
+      saveLocal();
+      await saveToFirebase();
+    }
+
+    // === INITIALIZATION ===
+    async function init() {
+      loadLocal();
+      await loadFromFirebase();
+      renderFeeding();
+      renderWater();
+      renderActivity();
+      showUserOverlayIfNeeded();
+
+      document.getElementById("btn-feed").addEventListener("click", handleFeedClick);
+      document.getElementById("btn-water").addEventListener("click", handleWaterClick);
+      document.getElementById("feed-popup-ok").addEventListener("click", hideFeedPopup);
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
 </body>
 </html>
